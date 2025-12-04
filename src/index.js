@@ -60,7 +60,7 @@ const registerEventHandlers = () => {
 document.addEventListener('DOMContentLoaded', registerEventHandlers);
 
 const axios = require('axios');
-const dotEnv =require('dotenv');
+const dotEnv = require('dotenv');
 
 dotEnv.config();
 const locationApiKey = process.env.LOCATION_KEY;
