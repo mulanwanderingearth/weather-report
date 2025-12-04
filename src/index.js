@@ -35,6 +35,16 @@ const changeColor = () => {
     }
 };
 
+const updateCity = () => {
+    let cityValue = document.getElementById('cityNameInput').value;
+    if (cityValue){
+        document.getElementById('headerCityName').textContent = cityValue;
+    }else {
+        document.getElementById('headerCityName').textContent = '';
+
+    }
+}
+
 const registerEventHandlers = () => {
     const addTempretureButton = document.querySelector('#increaseTempControl');
     addTempretureButton.addEventListener('click', addTemp);
@@ -42,6 +52,8 @@ const registerEventHandlers = () => {
     const decreaseTempretureButton = document.querySelector('#decreaseTempControl');
     decreaseTempretureButton.addEventListener('click', decreaseTemp);
     decreaseTempretureButton.addEventListener('click', changeColor);
+    const cityInput = document.getElementById('cityNameInput');
+    cityInput.addEventListener('input', updateCity)
 
 }
 
