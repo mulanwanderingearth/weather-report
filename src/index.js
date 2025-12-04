@@ -1,5 +1,5 @@
 "use strict"
-// const axios = require('axios');
+
 const state = {
     temp: 78,
 }
@@ -58,3 +58,61 @@ const registerEventHandlers = () => {
 }
 
 document.addEventListener('DOMContentLoaded', registerEventHandlers);
+
+const axios = require('axios');
+const dotEnv =require('dotenv');
+
+dotEnv.config();
+const locationApiKey = process.env.LOCATION_KEY;
+const weatherApiKey = process.env.WEATHER_KEY;
+
+const getWeatherFromLocation = (query) => {
+    findLatitudeAndLongitude(query)
+    .then((response) => {
+        getWeather(response.latitude, response.long);
+    })
+    .catch((error) => {
+        console.log('error fetching loction from query')
+    })
+};
+
+const findLatitudeAndLongitude = (query) => {
+  let latitude, longitude;
+  return axios.get('https://us1.locationiq.com/v1/search.php',
+    {
+      params: {
+        key: locationApiKey,
+        q: query,
+        format: 'json'
+      }
+    })
+    .then((response) => {
+      latitude = response.data[0].lat;
+      longitude = response.data[0].lon;
+      console.log('success in findLatitudeAndLongitude!', latitude, longitude);
+
+      return {latitude, longitude}; // Return the data we want to pass on
+    })
+    .catch((error) => {
+      console.log('error in findLatitudeAndLongitude!');
+      // console.log(error); // If we want to see more info about the issue
+    });
+};
+
+const getWeather = (latitude,longitude) =>{
+    return axios.get('https://api.openweathermap.org/data/2.5/onecall',
+        {
+            params: {
+                appid: weatherApiKey,
+                format: 'json',
+                lat: latitude,
+                lon: longitude
+            }
+        })
+        .then((response) => {
+            console.log(response.current.temp);
+            return response
+        })
+    )
+    
+}
