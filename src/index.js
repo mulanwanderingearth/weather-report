@@ -111,8 +111,9 @@ const getWeather = (latitude,longitude) =>{
         })
         .then((response) => {
             console.log(response.current.temp);
-            return response
+            return response;
         })
-    )
-    
-}
+        .catch((error) => {
+            return error;
+        }); 
+};
