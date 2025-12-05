@@ -1,37 +1,38 @@
-"use strict"
+'use strict';
 
 const state = {
   temp: 78,
   city: 'Seattle',
-}
-const clickTempContainer = document.querySelector("#tempValue");
-const updateLandscapeContainer = document.getElementById("landscape");
+};
+
+const clickTempContainer = document.querySelector('#tempValue');
+const updateLandscapeContainer = document.getElementById('landscape');
 
 const addTemp = () => {
   state.temp += 1;
   clickTempContainer.textContent = state.temp;
-}
+};
 
 const decreaseTemp = () => {
   state.temp -= 1;
   clickTempContainer.textContent = state.temp;
-}
+};
 
 const changeColor = () => {
   if (state.temp >= 80) {
-    clickTempContainer.style.backgroundColor = "red";
-    updateLandscapeContainer.textContent = "🌵__🐍_🦂_🌵🌵__🐍_🏜_🦂";
+    clickTempContainer.style.backgroundColor = 'red';
+    updateLandscapeContainer.textContent = '🌵__🐍_🦂_🌵🌵__🐍_🏜_🦂';
   } else if (state.temp >= 70 && state.temp <= 79) {
-    clickTempContainer.style.backgroundColor = "orange";
-    updateLandscapeContainer.textContent = "🌸🌿🌼__🌷🌻🌿_☘️🌱_🌻🌷";
+    clickTempContainer.style.backgroundColor = 'orange';
+    updateLandscapeContainer.textContent = '🌸🌿🌼__🌷🌻🌿_☘️🌱_🌻🌷';
   } else if (state.temp >= 60 && state.temp <= 69) {
-    clickTempContainer.style.backgroundColor = "yellow";
-    updateLandscapeContainer.textContent = "🌾🌾_🍃_🪨__🛤_🌾🌾🌾_🍃";
+    clickTempContainer.style.backgroundColor = 'yellow';
+    updateLandscapeContainer.textContent = '🌾🌾_🍃_🪨__🛤_🌾🌾🌾_🍃';
   } else if (state.temp >= 50 && state.temp <= 59) {
-    clickTempContainer.style.backgroundColor = "green";
-    updateLandscapeContainer.textContent = "🌲🌲⛄️🌲⛄️🍂🌲🍁🌲🌲⛄️🍂🌲";
+    clickTempContainer.style.backgroundColor = 'green';
+    updateLandscapeContainer.textContent = '🌲🌲⛄️🌲⛄️🍂🌲🍁🌲🌲⛄️🍂🌲';
   } else {
-    clickTempContainer.style.backgroundColor = "teal";
+    clickTempContainer.style.backgroundColor = 'teal';
   }
 };
 
@@ -43,22 +44,7 @@ const updateCity = () => {
   } else {
     document.getElementById('headerCityName').textContent = '';
   }
-}
-
-const registerEventHandlers = () => {
-  const addTempretureButton = document.querySelector('#increaseTempControl');
-  addTempretureButton.addEventListener('click', addTemp);
-  addTempretureButton.addEventListener('click', changeColor);
-  const decreaseTempretureButton = document.querySelector('#decreaseTempControl');
-  decreaseTempretureButton.addEventListener('click', decreaseTemp);
-  decreaseTempretureButton.addEventListener('click', changeColor);
-  const cityInput = document.getElementById('cityNameInput');
-  cityInput.addEventListener('input', updateCity);
-  const realTimeTempButton = document.getElementById('currentTempButton');
-  realTimeTempButton.addEventListener('click', () => getWeatherFromLocation(state.city));
-}
-
-document.addEventListener('DOMContentLoaded', registerEventHandlers);
+};
 
 const getWeatherFromLocation = (query) => {
   return findLatitudeAndLongitude(query)
@@ -66,8 +52,8 @@ const getWeatherFromLocation = (query) => {
       return getWeather(response.latitude, response.longitude);
     })
     .catch((error) => {
-      console.log('error fetching loction from query')
-    })
+      console.log('error fetching loction from query');
+    });
 };
 
 const findLatitudeAndLongitude = (query) => {
@@ -84,7 +70,7 @@ const findLatitudeAndLongitude = (query) => {
       return { latitude, longitude };
     })
     .catch((error) => {
-      console.log('error in findLatitudeAndLongitude!');
+      console.log(`error in findLatitudeAndLongitude!: ${error}`);
     });
 };
 
@@ -108,3 +94,18 @@ const getWeather = (latitude, longitude) => {
       return error;
     });
 };
+
+const registerEventHandlers = () => {
+  const addTempretureButton = document.querySelector('#increaseTempControl');
+  addTempretureButton.addEventListener('click', addTemp);
+  addTempretureButton.addEventListener('click', changeColor);
+  const decreaseTempretureButton = document.querySelector('#decreaseTempControl');
+  decreaseTempretureButton.addEventListener('click', decreaseTemp);
+  decreaseTempretureButton.addEventListener('click', changeColor);
+  const cityInput = document.getElementById('cityNameInput');
+  cityInput.addEventListener('input', updateCity);
+  const realTimeTempButton = document.getElementById('currentTempButton');
+  realTimeTempButton.addEventListener('click', () => getWeatherFromLocation(state.city));
+};
+
+document.addEventListener('DOMContentLoaded', registerEventHandlers);
