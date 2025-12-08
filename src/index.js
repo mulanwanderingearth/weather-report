@@ -46,14 +46,17 @@ const updateCity = () => {
   }
 };
 
-const getWeatherFromLocation = (query) => {
-  return findLatitudeAndLongitude(query)
-    .then((response) => {
-      return getWeather(response.latitude, response.longitude);
-    })
-    .catch((error) => {
-      console.log('error fetching loction from query');
-    });
+async function getWeatherFromLocation(query){
+  try{
+    let response = await findLatitudeAndLongitude(query);
+    let tempK = await getWeather(response.latitude, response.longitude);
+    state.temp = changeTempKToF(tempK);
+    clickTempContainer.textContent = state.temp;
+    changeColor();
+  }catch(error) {
+    console.log(`error fetching weather : ${error}`);
+
+  }
 };
 
 const findLatitudeAndLongitude = (query) => {
@@ -71,6 +74,7 @@ const findLatitudeAndLongitude = (query) => {
     })
     .catch((error) => {
       console.log(`error in findLatitudeAndLongitude!: ${error}`);
+      throw error;
     });
 };
 
@@ -83,16 +87,41 @@ const getWeather = (latitude, longitude) => {
       }
     })
     .then((response) => {
-      const tempK = response.data.main.temp;
-      const tempF = (tempK - 273.15) * (9 / 5) + 32;
-      state.temp = Math.round(tempF);
-      clickTempContainer.textContent = state.temp;
-      changeColor();
-      return state.temp;
+      // const tempK = response.data.main.temp;
+      // const tempF = (tempK - 273.15) * (9 / 5) + 32;
+      // state.temp = Math.round(tempF);
+      // clickTempContainer.textContent = state.temp;
+      // changeColor();
+      console.log(`sucessuflly get weather : ${response.data.main.temp}`);
+      return response.data.main.temp;
     })
     .catch((error) => {
-      return error;
+      throw error;
     });
+};
+
+const changeTempKToF =(tempK) =>{
+  const tempF = (tempK - 273.15) * (9 / 5) + 32;
+  return Math.round(tempF);
+};
+
+const changeSky = () => {
+  const skySelectValue = document.getElementById('skySelect').value;
+  if (skySelectValue == 'Sunny') {
+    document.getElementById('sky').textContent = '☁️ ☁️ ☁️ ☀️ ☁️ ☁️';
+  } else if (skySelectValue == 'Cloudy') {
+    document.getElementById('sky').textContent = '☁️☁️ ☁️ ☁️☁️ ☁️ 🌤 ☁️ ☁️☁️';
+  } else if (skySelectValue == 'Rainy') {
+    document.getElementById('sky').textContent = '🌧🌈⛈🌧🌧💧⛈🌧🌦🌧💧🌧🌧';
+  } else if (skySelectValue == 'Snowy') {
+    document.getElementById('sky').textContent = '🌨❄️🌨🌨❄️❄️🌨❄️🌨❄️❄️🌨🌨';
+  }
+};
+
+const cityReset = () => {
+  state.city = 'Seatlle';
+  document.getElementById('cityNameInput').value = state.city;
+  document.getElementById('headerCityName').textContent = state.city;
 };
 
 const registerEventHandlers = () => {
@@ -106,6 +135,10 @@ const registerEventHandlers = () => {
   cityInput.addEventListener('input', updateCity);
   const realTimeTempButton = document.getElementById('currentTempButton');
   realTimeTempButton.addEventListener('click', () => getWeatherFromLocation(state.city));
+  const skySelect = document.getElementById('skySelect');
+  skySelect.addEventListener('change', changeSky);
+  const resetButton = document.querySelector('#cityNameReset');
+  resetButton.addEventListener('click', cityReset);
 };
 
 document.addEventListener('DOMContentLoaded', registerEventHandlers);
