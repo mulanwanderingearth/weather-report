@@ -103,6 +103,7 @@ color: white;
 }
 
 .garden__content {
+background-color: skyblue;
 min-height: 200px;
 max-width: fit-content;
 margin: auto;
