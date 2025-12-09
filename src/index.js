@@ -46,14 +46,14 @@ const updateCity = () => {
   }
 };
 
-async function getWeatherFromLocation(query){
-  try{
+async function getWeatherFromLocation(query) {
+  try {
     let response = await findLatitudeAndLongitude(query);
     let tempK = await getWeather(response.latitude, response.longitude);
     state.temp = changeTempKToF(tempK);
     clickTempContainer.textContent = state.temp;
     changeColor();
-  }catch(error) {
+  } catch (error) {
     console.log(`error fetching weather : ${error}`);
 
   }
@@ -87,11 +87,6 @@ const getWeather = (latitude, longitude) => {
       }
     })
     .then((response) => {
-      // const tempK = response.data.main.temp;
-      // const tempF = (tempK - 273.15) * (9 / 5) + 32;
-      // state.temp = Math.round(tempF);
-      // clickTempContainer.textContent = state.temp;
-      // changeColor();
       console.log(`sucessuflly get weather : ${response.data.main.temp}`);
       return response.data.main.temp;
     })
@@ -100,7 +95,7 @@ const getWeather = (latitude, longitude) => {
     });
 };
 
-const changeTempKToF =(tempK) =>{
+const changeTempKToF = (tempK) => {
   const tempF = (tempK - 273.15) * (9 / 5) + 32;
   return Math.round(tempF);
 };
