@@ -114,7 +114,7 @@ const changeSky = () => {
 };
 
 const cityReset = () => {
-  state.city = 'Seatle';
+  state.city = 'Seattle';
   document.getElementById('cityNameInput').value = state.city;
   document.getElementById('headerCityName').textContent = state.city;
 };
