@@ -61,7 +61,7 @@ async function getWeatherFromLocation(query) {
 
 const findLatitudeAndLongitude = (query) => {
   let latitude, longitude;
-  return axios.get('http://127.0.0.1:5000/location', {
+  return axios.get('https://ada-weather-report-proxy-server.onrender.com/location', {
     params: {
       q: query
     }
@@ -79,7 +79,7 @@ const findLatitudeAndLongitude = (query) => {
 };
 
 const getWeather = (latitude, longitude) => {
-  return axios.get('http://127.0.0.1:5000/weather',
+  return axios.get('https://ada-weather-report-proxy-server.onrender.com/weather',
     {
       params: {
         lat: latitude,
@@ -114,7 +114,7 @@ const changeSky = () => {
 };
 
 const cityReset = () => {
-  state.city = 'Seatlle';
+  state.city = 'Seatle';
   document.getElementById('cityNameInput').value = state.city;
   document.getElementById('headerCityName').textContent = state.city;
 };
